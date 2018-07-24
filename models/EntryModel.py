@@ -9,7 +9,7 @@ class EntryModel(db.Model):
     __tablename__ = 'entry'
 
     id = db.Column('entry_id', db.Integer, primary_key=True)
-    corpus_id = db.Column('corpus_id', db.Integer, db.ForeignKey('corpus.corpus_id'))
+    corpusId = db.Column('corpus_id', db.Integer, db.ForeignKey('corpus.corpus_id'))
     corpus = db.relationship('CorpusModel')
 
     author = db.Column(db.String(32), nullable=False)
@@ -17,8 +17,8 @@ class EntryModel(db.Model):
     entry_start = db.Column(DATETIME, nullable=False, default=func.now())
     entry_end = db.Column(DATETIME, default=func.now())
 
-    def __init__(self, corpus_id, author, entry, entry_start, entry_end):
-        self.corpus_id = corpus_id
+    def __init__(self, corpusId, author, entry, entry_start, entry_end):
+        self.corpusId = corpusId
         self.author = author
         self.entry = entry
 
@@ -35,11 +35,11 @@ class EntryModel(db.Model):
     def json(self):
         return {
             'id': self.id,
-            'corpus_id': self.corpus_id,
+            'corpusId': self.corpusId,
             'author': self.author,
             'entry': self.entry,
-            'entry_start': self.entry_start.replace(microsecond=0).isoformat() if self.entry_start else datetime.now().replace(microsecond=0).isoformat(),
-            'entry_end':  self.entry_end.replace(microsecond=0).isoformat() if self.entry_end else datetime.now().replace(microsecond=0).isoformat()
+            'entryStart': self.entry_start.replace(microsecond=0).isoformat() if self.entry_start else datetime.now().replace(microsecond=0).isoformat(),
+            'entryEnd':  self.entry_end.replace(microsecond=0).isoformat() if self.entry_end else datetime.now().replace(microsecond=0).isoformat()
         }
 
     @classmethod
@@ -47,8 +47,8 @@ class EntryModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_by_corpus_id(cls, _corpus_id):
-        return cls.query.filter_by(corpus_id=_corpus_id)
+    def find_by_corpus_id(cls, _corpusId):
+        return cls.query.filter_by(corpusId=_corpusId)
 
     def save_to_db(self):
         db.session.add(self)
